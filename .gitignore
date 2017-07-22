@@ -1,0 +1,6 @@
+*.csv
+*.pyc
+*.db
+taxi_zones/
+*.7z
+
