@@ -73,17 +73,15 @@ def add_pickup_dropoff_zones(df):
 
     return pd.concat(dfs, axis=1)
 
-job_id = sys.argv[1]
 
-df_trip = pd.read_csv("../via_data_challenge/original_data/trip_data/trip_data_8.csv")
-df_fare = pd.read_csv("../via_data_challenge/original_data/trip_fare/trip_fare_8.csv")
+# df_trip = pd.read_csv("../via_data_challenge/original_data/trip_data/trip_data_8.csv")
+# df_fare = pd.read_csv("../via_data_challenge/original_data/trip_fare/trip_fare_8.csv")
 
-rename_columns(df_trip, df_fare)
-df = merge(df_trip, df_fare)
-drop_wrong_data(df)
+# rename_columns(df_trip, df_fare)
+# df = merge(df_trip, df_fare)
+# drop_wrong_data(df)
 
-df.to_csv("trip_data_2013_08.csv")
-
+# df.to_csv("trip_data_2013_08.csv")
 
 shapes = []
 bounds = []
@@ -95,32 +93,51 @@ with fiona.open("./taxi_zones/taxi_zones_new.shp") as fiona_collection:
         shapes.append(shape)
         bounds.append(shape.bounds)
         zones.append(zone['properties']['LocationID'])
+
 idx_shape = range(len(shapes))
 
 start = dt.datetime.now()
-chunksize = 2000
+chunksize = 20000
 j = 0
 
-with open("./inputs/"+job_id+"_input", 'r') as f:
-    inputs = f.readline().split(' ')
-    index_start = int(inputs[0])
-    index_end = int(inputs[1])
+job_id = sys.argv[1]
+disk_engine = create_engine('sqlite:///trip_data_2013.db')
 
-index = index_start+1
-for df in pd.read_csv('./trip_data_2013_08.csv', header=0, chunksize=chunksize, skiprows=range(1, index_start+1), iterator=True, encoding='utf-8'):
+for df in pd.read_csv('./cleaned_data/trip_data_2013_'+str(job_id)+'.csv', header=0, chunksize=chunksize, iterator=True, encoding='utf-8'):
     df = add_pickup_dropoff_zones(df)
 
-    if j == 0:
-        with open(job_id+'_zone_trip_2013_08.csv', 'w') as f:
-            df.to_csv(f)
-    else:
-        with open(job_id+'_zone_trip_2013_08.csv', 'a') as f:
-            df.to_csv(f, header=False)
+    df.to_sql("trip_data_"+str(job_id), disk_engine, if_exists='append')
     
     j+=1
-    print '{} seconds: completed {} rows'.format((dt.datetime.now() - start).seconds, index_start + j*chunksize)
+    print '{} seconds: completed {} rows'.format((dt.datetime.now() - start).seconds, j*chunksize)
+
+
+# with open("./inputs/"+job_id+"_input", 'r') as f:
+    # inputs = f.readline().split(' ')
+    # index_start = int(inputs[0])
+    # index_end = int(inputs[1])
+
+# index = index_start+1
+# for df in pd.read_csv('./trip_data_2013_08.csv', header=0, chunksize=chunksize, skiprows=range(1, index_start+1), iterator=True, encoding='utf-8'):
+    # df = add_pickup_dropoff_zones(df)
+
+    # if j == 0:
+        # with open(job_id+'_zone_trip_2013_08.csv', 'w') as f:
+            # df.to_csv(f)
+    # else:
+        # with open(job_id+'_zone_trip_2013_08.csv', 'a') as f:
+            # df.to_csv(f, header=False)
     
-    index += chunksize
-    if index > index_end:
-        break
+    # j+=1
+    # print '{} seconds: completed {} rows'.format((dt.datetime.now() - start).seconds, index_start + j*chunksize)
+    
+    # index += chunksize
+    # if index > index_end:
+        # break
+
+# for i in range(1, 12):
+    # df = pd.read_csv(str(i)+'_zone_trip_2013_08.csv', header=0, low_memory=False)
+    # print len(df)
+    # print df.describe()
+    # df.to_sql("trip_data", disk_engine, if_exists='append')
 
