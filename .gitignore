@@ -4,4 +4,6 @@
 taxi_zones/
 *.7z
 *.log
+*.png
+*.html
 
