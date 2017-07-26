@@ -3,4 +3,5 @@
 *.db
 taxi_zones/
 *.7z
+*.log
 
