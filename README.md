@@ -10,6 +10,12 @@ I suggest that you use docker to install all the required packages for this proj
 ``` ./build.sh ```
 * Step 3: Run the command ```./start.sh``` to open the jupyter notebook in your browser.
 
+The pipeline to run the whole project is as follows:
+Step 1: Go to http://www.andresmh.com/nyctaxitrips/ to download the two files ```trip_data.7z``` and ```trip_fare.7z```, extract the files in a new folder in the working directory ```./original_data```.
+Step 2: Go to folder ```./cleaned_data``` to run the command
+
+```python data_clean.py```
+
 
 
 
