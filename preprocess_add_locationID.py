@@ -39,7 +39,7 @@ if __name__ == "__main__":
     shapes = []
     bounds = []
     zones = []
-    with fiona.open("./taxi_zones/taxi_zones_new.shp") as fiona_collection:
+    with fiona.open("../taxi_zones/taxi_zones_new.shp") as fiona_collection:
         for zone in fiona_collection:
             # Use Shapely to create the polygon
             shape = geometry.asShape(zone['geometry'])
@@ -56,7 +56,7 @@ if __name__ == "__main__":
     job_id = sys.argv[1]
     disk_engine = create_engine('sqlite:///trip_data_2013.db')
 
-    for df in pd.read_csv('./cleaned_data/trip_data_2013_'+str(job_id)+'.csv', header=0, chunksize=chunksize, iterator=True, encoding='utf-8'):
+    for df in pd.read_csv('../cleaned_data/trip_data_2013_'+str(job_id)+'.csv', header=0, chunksize=chunksize, iterator=True, encoding='utf-8'):
         df = add_pickup_dropoff_zones(df)
 
         df.to_sql("trip_data_"+str(job_id), disk_engine, if_exists='append')
