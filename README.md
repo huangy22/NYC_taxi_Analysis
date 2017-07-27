@@ -12,10 +12,15 @@ I suggest that you use docker to install all the required packages for this proj
 
 The pipeline to run the whole project is as follows:
 
-* Step 1: Go to http://www.andresmh.com/nyctaxitrips/ to download the two files ```trip_data.7z``` and ```trip_fare.7z```, extract the files in a new folder in the working directory ```./original_data```.
-* Step 2: Go to folder ```./cleaned_data``` to run the command
+* Step 1: Go to http://www.andresmh.com/nyctaxitrips/ to download the two files ```trip_data.7z``` and ```trip_fare.7z```, extract the files in a new folder in the working directory ```./original_data```. These two files include all the taxi ride data during 2013 from January to December.
+* Step 2: Go to folder ```./cleaned_data``` to run the command:
 
   ```python data_clean.py```
+* Step 3: Go back to the working directory, run the preprocess code to extract the locationID for all the dropoff and pickup locations of each ride. There are two versions of code ```preprocess_add_locationID.py``` and the parallel version ```preprocess_add_locationID_parallel.py```. Run the code with a input variable (integer from 1 to 12) to process the data set of the corresponding month, for example, to process data for August 2013, run the following command: 
+  
+  ``` python preprocess_add_locationID.py 8``` 
+  
+  This code may take several hours to run.
 
 
 
