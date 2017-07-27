@@ -8,4 +8,5 @@ taxi_zones/
 *.html
 cleaned_data/
 original_data/
+.ipynb_checkpoints/
 
