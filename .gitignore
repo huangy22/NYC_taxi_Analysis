@@ -6,4 +6,6 @@ taxi_zones/
 *.log
 *.png
 *.html
+cleaned_data/
+original_data/
 
