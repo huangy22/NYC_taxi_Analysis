@@ -22,6 +22,11 @@ The pipeline to run the whole project is as follows:
   
   This code may take several hours to run.
 
+* Step 4: Go to folder ```./wait_time``` and run the command ```./submit.sh``` to submit multiple jobs to calculate the driver's waiting time for each ride that drops off passengers in the areas of our interest during a given month.
+  
+* Step 5: Go to folder ```./recommend_next_ride``` and run the code ```./recommend_next.py``` to get the recommended next pickup for drivers.
+
+* Step 6: Given all the calculated results, finally we can open our jupyter notebook to run the data analysis and see the results and graphs!
 
 
 
