@@ -1,0 +1,1 @@
+docker run -v $PWD/..:/home/notebooks -i -t -p 8888:8888 jupyter /bin/bash -c "jupyter nbextension enable --py --sys-prefix widgetsnbextension && jupyter notebook --NotebookApp.iopub_data_rate_limit=10000000000 --notebook-dir=/home/notebooks --ip='*' --port=8888 --no-browser --allow-root"
